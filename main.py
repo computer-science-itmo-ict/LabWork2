@@ -1,4 +1,5 @@
-import random
+import networkx as nx
+import matplotlib.pyplot as plt
 
 students_keys = ['girl', 'is18', 'glasses', 'brownEyes', 'darkHair', 'siblings', 'pet', 'fromSPb', 'iphone', 'tushavin', 'coffe', 'homefood', 'watch', 'nameVowel', 'pizza', 'smoke', 'heightOver175', 'partner', 'winterOrSpring', 'gaming', 'campus', 'movies', 'anime']
 students = [
@@ -706,35 +707,20 @@ questions = {"girl": "Студент девушка?",
 
 
 
-while (len(students) > 1):
-    random_question = random.randint(0, len(questions) - 1)
-    print(questions[students_keys[random_question]])
-    answer = input()
-    if (answer == "да") or (answer == "Да"):
-        truth_of_answer = True
-    elif (answer == "нет") or (answer == "Нет"):
-        truth_of_answer = False
+graph = nx.Graph()
+for i in range(len(students)):
+    graph.add_node(students[i]["name"])
 
-    i = 0
-    while (i < len(students)):
-        if students[i][students_keys[random_question]] != truth_of_answer:
-            students.pop(i)
-        else:
-            i += 1
-    questions.pop(students_keys[random_question])
-    students_keys.pop(random_question)
+for i in range(len(students_keys)):
+    graph.add_node(students_keys[i])
+
+for i in range(len(students)):
+    for j in range(len(students_keys)):
+        if (students[i][students_keys[j]]):
+            graph.add_edge(students[i]["name"], students_keys[j], graph=graph)
 
 
-if len(students) == 0:
-    print("Студента с введенными характеристиками не существует")
-else:
-    print(students[0]["name"])
-
-
-
-
-
-
-
+nx.draw_circular(graph, node_color='red', node_size=1000, with_labels=True)
+plt.show()
 
 
